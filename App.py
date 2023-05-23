@@ -6,7 +6,7 @@ import seaborn as sns
 import base64
 
 
-pages= ['🚀 Chargement des données', '📈 Visualisation']
+pages= ['Accueil', '🚀 Chargement des données', '📈 Visualisation']
 st.image('logo.png', use_column_width=1)
 st.sidebar.subheader("Choisissez votre page : ")
 page=st.sidebar.radio("",pages)
@@ -31,10 +31,18 @@ def download_excel(data):
     href = f'<a href="data:application/octet-stream;base64,{b64}" download="{excel_file}">Télécharger Excel</a>'
     return href
 
+if page == pages[0]:
+    st.title("Calcul des heures des ART")
+    st.write("Cette application vous permettra d'obtenir les heures de travail des\n",
+             "une fois les données du planning chargée. Vous pouvez les obtenir depuis\n",
+             "le planning IMADIS dans la section 'Administrateur' puis 'Tour de Garde'.\n",
+             "Ensuite sélectionnez le/les Tour(s) de Garde dont vous souhaitez extraire les informations.\n",
+             "Cliquer sur l'îcone du fichier Excel et sélectionner 'ART' puis 'Générer.")
+    st.image("planning.png")
+    
 st.sidebar.header("Données :")
 excel_file = st.sidebar.file_uploader("Charger un fichier Excel (dates les plus anciennes)", type=["xlsx", "xls"])
 excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin (dates plus récentes)", type=["xlsx", "xls"])
-
 
 if excel_file is not None and excel_file2 is not None:
     # Charger le fichier Excel dans un DataFrame pandas
@@ -47,8 +55,7 @@ elif excel_file is None and excel_file2 is not None:
 elif excel_file is not None and excel_file2 is None:
     df = pd.read_excel(excel_file, header=None)  
 else:
-    st.write("Charger un fichier excel pour commencer.")  
-
+    st.write("Maintenant vous allez pouvoir charger votre fichier excel pour commencer.")  
 
 if excel_file or excel_file2 is not None:   
     if len(df.columns)==11:
@@ -69,8 +76,8 @@ if excel_file or excel_file2 is not None:
         df['Date'] = df['Date'].dt.strftime('%d/%m/%Y')
         df['Date'] = df['Date'].fillna(method='ffill')
         df['Durée'] = df.apply(calculate_duration, axis=1)
-        
-if page == pages[0]:
+
+if page == pages[1]:
     st.title("RH ART")
     st.header("Données :")
     st.write("Les données vont du",df['Date'].iloc[0], "au",df['Date'].iloc[-1], ".")    
@@ -81,8 +88,8 @@ if page == pages[0]:
         st.dataframe(df)
         #st.write(df.dtypes)
     st.sidebar.image('logo.png')
-        
-if page == pages[1]:
+       
+if page == pages[2]:
     st.header("Horaires des ART")
     st.sidebar.image('logo.png')
     mois={"janvier":1, "février":2, "mars":3, "avril":4, "mai":5, "juin":6, "juillet":7, 
