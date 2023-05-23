@@ -6,6 +6,8 @@ import seaborn as sns
 import base64
 
 
+st.image('logo.png', use_column_width=1)
+st.title("Calcul des heures des ART")
 def authentication():
     password = st.sidebar.text_input("Mot de passe :", type="password")
     if password == "rhm2023!":
@@ -15,8 +17,6 @@ def authentication():
 
 def main():
     if authentication():
-        st.image('logo.png', use_column_width=1)
-        st.title("Calcul des heures des ART")
         st.sidebar.markdown("<p style='color:red'>Application sécurisée</p>", unsafe_allow_html=True)
         st.write("")
         pages= ['🏥 Accueil', '🚀 Chargement des données', '📈 Visualisation']
