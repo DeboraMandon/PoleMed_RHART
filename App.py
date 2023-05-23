@@ -6,7 +6,7 @@ import seaborn as sns
 import base64
 
 
-pages= ['Accueil', '🚀 Chargement des données', '📈 Visualisation']
+pages= ['🏥 Accueil', '🚀 Chargement des données', '📈 Visualisation']
 st.image('logo.png', use_column_width=1)
 st.sidebar.subheader("Choisissez votre page : ")
 page=st.sidebar.radio("",pages)
