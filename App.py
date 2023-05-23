@@ -8,6 +8,8 @@ import base64
 
 st.image('logo.png', use_column_width=1)
 st.title("Calcul des heures des ART")
+st.sidebar.write("Entrez le mot de passe :")
+
 def authentication():
     password = st.sidebar.text_input("Mot de passe :", type="password")
     if password == "rhm2023!":
@@ -90,7 +92,7 @@ def main():
                 df['Durée'] = df.apply(calculate_duration, axis=1)
 
         if page == pages[1]:
-            st.title("RH ART")
+            #st.title("RH ART")
             st.header("Données :")
             st.write("Les données vont du",df['Date'].iloc[0], "au",df['Date'].iloc[-1], ".")    
             
