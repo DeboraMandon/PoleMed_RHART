@@ -44,7 +44,7 @@ def main():
             return href
 
         if page == pages[0]:
-            st.title("Calcul des heures des ART")
+            #st.title("Calcul des heures des ART")
             st.write("Cette application vous permettra d'obtenir les heures de travail des\n",
                     "une fois les données du planning chargée. Vous pouvez les obtenir depuis\n",
                     "le planning IMADIS dans la section 'Administrateur' puis 'Tour de Garde'.\n",
