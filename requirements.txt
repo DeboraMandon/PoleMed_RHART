@@ -4,4 +4,3 @@ pandas
 seaborn
 base64
 datetime
-openpyxl
