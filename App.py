@@ -32,8 +32,8 @@ def download_excel(data):
     return href
 
 st.sidebar.header("Données :")
-excel_file = st.sidebar.file_uploader("Charger un fichier Excel", type=["xlsx", "xls"])
-excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin", type=["xlsx", "xls"])
+excel_file = st.sidebar.file_uploader("Charger un fichier Excel (dates les plus anciennes)", type=["xlsx", "xls"])
+excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin (dates plus récentes)", type=["xlsx", "xls"])
 
 
 if excel_file is not None and excel_file2 is not None:
@@ -55,6 +55,7 @@ if excel_file or excel_file2 is not None:
         colonnes = ['Date', 'Titre', 'Nom', 'Prénom', 'mail', 'Site', 'Type', 'Date_début', 'Date_fin', 'col', 'Formation']
         df.columns = colonnes
         df=df.drop(["Titre", "mail", "Type", "col", "Formation"], axis=1)
+        df['Nom_Prénom']=df['Nom']+" "+df['Prénom']
         df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
         df['Date'] = df['Date'].dt.strftime('%d/%m/%Y')
         df['Date'] = df['Date'].fillna(method='ffill')
@@ -63,6 +64,7 @@ if excel_file or excel_file2 is not None:
         colonnes = ['Date', 'Titre', 'Nom', 'Prénom', 'mail', 'Site', 'Type', 'Date_début', 'Date_fin']
         df.columns = colonnes
         df=df.drop(["Titre", "mail", "Type"], axis=1)
+        df['Nom_Prénom']=df['Nom']+" "+df['Prénom']
         df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
         df['Date'] = df['Date'].dt.strftime('%d/%m/%Y')
         df['Date'] = df['Date'].fillna(method='ffill')
@@ -71,14 +73,13 @@ if excel_file or excel_file2 is not None:
 if page == pages[0]:
     st.title("RH ART")
     st.header("Données :")
-
-    st.write("Les données vont du",df['Date'].iloc[0], "au",df['Date'].iloc[-1], ".")
+    st.write("Les données vont du",df['Date'].iloc[0], "au",df['Date'].iloc[-1], ".")    
     
     if st.checkbox("Afficher les données brutes :", False):
         st.subheader("Visualisation du jeu de données : ")
         st. write("Nombre de lignes et nombre de colonne :", df.shape)
         st.dataframe(df)
-        st.write(df.dtypes)
+        #st.write(df.dtypes)
     st.sidebar.image('logo.png')
         
 if page == pages[1]:
@@ -94,26 +95,32 @@ if page == pages[1]:
     df_filtre = df[df['Date'].dt.month == mois_filtre]
     
     if not df_filtre.empty:
+        st.subheader(f"Durée totale réalisée par ART pour le mois de {mois_select}")
         couleurs_sites = {"St etienne": 'green', "Lyon": 'blue', "Bordeaux":'red', "Rennes":'yellow', 
                           "Marseille": 'lightblue', "Dijon":'orange', "Clermont":"purple", "Brest":'grey'}
-        grouped_data = df_filtre.groupby(['Nom', 'Site'])['Durée'].sum().reset_index()
+        grouped_data = df_filtre.groupby(['Nom_Prénom', 'Site'])['Durée'].sum().reset_index()
         fig1=plt.figure(figsize=(20, 12))
-        sns.barplot(x='Nom', y='Durée', hue='Site', data=grouped_data, palette=couleurs_sites)
+        sns.barplot(x='Nom_Prénom', y='Durée', hue='Site', data=grouped_data, palette=couleurs_sites)
         plt.title(f"Durée totale réalisée par ART pour le mois de {mois_select}.")
         plt.xlabel("Nom de l'ART")
         plt.ylabel('Durée totale')
         plt.xticks(rotation=70, ha='right',)
-        plt.legend()
+        plt.legend(loc="best")
         st.pyplot(fig1)
         
+        st.subheader(f"Durée cumulée réalisée par ART pour le mois de {mois_select}")
+        grouped_data['Durée cumulée'] = grouped_data.groupby(['Nom_Prénom'])['Durée'].cumsum()
+        st.dataframe(grouped_data)
+        st.markdown(download_excel(grouped_data), unsafe_allow_html=True)
+                
+        st.subheader(f"Total des vacations réalisées par ART pour le mois de {mois_select}")
         site_sel=st.multiselect("Site:", couleurs_sites, default=couleurs_sites)
-        grouped_data2 = df_filtre.groupby(['Nom','Prénom', 'Site', 'Date'])['Durée'].sum().reset_index()
+        grouped_data2 = df_filtre.groupby(['Nom_Prénom', 'Site', 'Date'])['Durée'].sum().reset_index()
         grouped_data_filtr=grouped_data2[grouped_data2['Site'].isin (site_sel)]
-        grouped_data_filtr=grouped_data_filtr.sort_values(by='Nom', ascending=True)
+        grouped_data_filtr=grouped_data_filtr.sort_values(by='Nom_Prénom', ascending=True)
         st.dataframe(grouped_data_filtr)
-        
         st.markdown(download_excel(grouped_data_filtr), unsafe_allow_html=True)
-        
+
     else:
         st.write(f"Aucune donnée disponible pour le mois {mois_select}.")
     
