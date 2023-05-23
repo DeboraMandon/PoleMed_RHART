@@ -8,7 +8,7 @@ import base64
 
 st.image('logo.png', use_column_width=1)
 st.title("Calcul des heures des ART")
-st.sidebar.write("Entrez le mot de passe :")
+st.sidebar.subheader("Authentification :")
 
 def authentication():
     password = st.sidebar.text_input("Mot de passe :", type="password")
