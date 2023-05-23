@@ -15,10 +15,11 @@ def authentication():
 
 def main():
     if authentication():
+        st.image('logo.png', use_column_width=1)
+        st.title("Calcul des heures des ART")
         st.sidebar.markdown("<p style='color:red'>Application sécurisée</p>", unsafe_allow_html=True)
         st.write("")
         pages= ['🏥 Accueil', '🚀 Chargement des données', '📈 Visualisation']
-        st.image('logo.png', use_column_width=1)
         st.sidebar.subheader("Choisissez votre page : ")
         page=st.sidebar.radio("",pages)
         st.sidebar.subheader("")
