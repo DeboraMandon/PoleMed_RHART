@@ -59,7 +59,7 @@ def main():
             
         st.sidebar.header("Données :")
         excel_file = st.sidebar.file_uploader("Charger un fichier Excel (dates les plus anciennes)", type=["xlsx", "xls"])
-        excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin (dates plus récentes)", type=["xlsx", "xls"])
+        excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin (dates les plus récentes)", type=["xlsx", "xls"])
 
         if excel_file is not None and excel_file2 is not None:
             # Charger le fichier Excel dans un DataFrame pandas
