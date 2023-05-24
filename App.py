@@ -120,12 +120,23 @@ def main():
             
             if not df_filtre.empty:
                 st.subheader(f"Durée totale réalisée par ART pour le mois de {mois_select}")
-                couleurs_sites = {"St etienne": 'green', "Lyon": 'blue', "Bordeaux":'red', "Rennes":'yellow', 
-                                "Marseille": 'lightblue', "Dijon":'orange', "Clermont":"purple", "Brest":'grey'}
+                couleurs_sites = {"St etienne": '#38E446', "Lyon": '#0F095F', "Bordeaux":'#8D1C39', "Rennes":'#E5EA18', 
+                                "Marseille": '#33F0FF', "Dijon":'#D7820B', "Clermont":"#99249F", "Brest":'#474C4C'}
                 grouped_data = df_filtre.groupby(['Nom_Prénom', 'Site'])['Durée'].sum().reset_index()
                 fig1=plt.figure(figsize=(20, 12))
-                sns.barplot(x='Nom_Prénom', y='Durée', hue='Site', data=grouped_data, palette=couleurs_sites)
+                ax = sns.barplot(x='Nom_Prénom', y='Durée', 
+                                 hue='Site', data=grouped_data, 
+                                 palette=couleurs_sites, ci=None, width=0.5)
+                plt.style.use('seaborn-whitegrid')
+                sns.despine()
+                for container in ax.containers:
+                    ax.bar_label(container)
+                plt.grid(True, color='lightgray')
                 plt.title(f"Durée totale réalisée par ART pour le mois de {mois_select}.")
+                for p in ax.patches:
+                    width = p.get_width()
+                    height = p.get_height()
+                    x, y = p.get_xy()
                 plt.xlabel("Nom de l'ART")
                 plt.ylabel('Durée totale')
                 plt.xticks(rotation=70, ha='right',)
@@ -155,4 +166,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-    
+
