@@ -11,8 +11,11 @@ st.title("Calcul des heures des ART")
 st.sidebar.subheader("Authentification :")
 
 def authentication():
+    fichier = open('add.txt', 'r')
+    mdp = fichier.read()
+
     password = st.sidebar.text_input("Mot de passe :", type="password")
-    if password == "rhm2023!":
+    if password == mdp:
         return True
     else:
         return False
