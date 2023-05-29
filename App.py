@@ -4,15 +4,16 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
 import base64
-
+import configparser
 
 st.image('logo.png', use_column_width=1)
 st.title("Calcul des heures des ART")
 st.sidebar.subheader("Authentification :")
 
 def authentication():
-    fichier = open('add.txt', 'r')
-    mdp = fichier.read()
+    config = configparser.ConfigParser()
+    config.read('cred.ini')
+    mdp = config.get('Credentials', 'mdp_rhm')
 
     password = st.sidebar.text_input("Mot de passe :", type="password")
     if password == mdp:
@@ -120,7 +121,7 @@ def main():
             
             if not df_filtre.empty:
                 st.subheader(f"Durée totale réalisée par ART pour le mois de {mois_select}")
-                couleurs_sites = {"St etienne": '#38E446', "Lyon": '#0F095F', "Bordeaux":'#8D1C39', "Rennes":'#E5EA18', 
+                couleurs_sites = {"St etienne": '#38E446', "Lyon": '#0F095F', "Bordeaux":'#A62A2A', "Rennes":'#E5EA18', 
                                 "Marseille": '#33F0FF', "Dijon":'#D7820B', "Clermont":"#99249F", "Brest":'#474C4C'}
                 grouped_data = df_filtre.groupby(['Nom_Prénom', 'Site'])['Durée'].sum().reset_index()
                 fig1=plt.figure(figsize=(20, 12))
