@@ -5,20 +5,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import base64
 import configparser
-import getpass
 
 st.image('logo.png', use_column_width=1)
 st.title("Calcul des heures des ART")
 st.sidebar.subheader("Authentification :")
-
-username = getpass.getuser()
-
-# télécharger les données puis les conserver en cache
-@st.cache_data
-def load_data():
-    df= pd.read_csv("C:/Users/"+username+"/Imadis Téléradiologie/INTRANET - IMADIS/QUALITE/7- RHM/15 - DMA/GitHub/data/BDD.csv")
-    return df
-df = load_data()
 
 def authentication():
     config = configparser.ConfigParser()
@@ -50,8 +40,63 @@ def main():
             duration_in_hours = duration_in_seconds / 3600
             return duration_in_hours
 
+        def download_excel(data):
+            excel_file = "data.xlsx"
+            data.to_excel(excel_file, index=False, header=True)
+            with open(excel_file, "rb") as f:
+                excel_data = f.read()
+            b64 = base64.b64encode(excel_data).decode()
+            href = f'<a href="data:application/octet-stream;base64,{b64}" download="{excel_file}">Télécharger Excel</a>'
+            return href
+
+        if page == pages[0]:
+            #st.title("Calcul des heures des ART")
+            st.write("Cette application vous permettra d'obtenir les heures de travail des\n",
+                    "une fois les données du planning chargée. Vous pouvez les obtenir depuis\n",
+                    "le planning IMADIS dans la section 'Administrateur' puis 'Tour de Garde'.\n",
+                    "Ensuite sélectionnez le/les Tour(s) de Garde dont vous souhaitez extraire les informations.\n",
+                    "Cliquer sur l'îcone du fichier Excel et sélectionner 'ART' puis 'Générer.")
+            st.image("planning.png")
+            
+        st.sidebar.header("Données :")
+        excel_file = st.sidebar.file_uploader("Charger un fichier Excel (dates les plus anciennes)", type=["xlsx", "xls"])
+        excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin (dates les plus récentes)", type=["xlsx", "xls"])
+
+        if excel_file is not None and excel_file2 is not None:
+            # Charger le fichier Excel dans un DataFrame pandas
+            df1 = pd.read_excel(excel_file, header=None)
+            df2 = pd.read_excel(excel_file2, header=None)
+            df=pd.concat([df1,df2])
+        elif excel_file is None and excel_file2 is not None:
+            # Charger le fichier Excel dans un DataFrame pandas
+            df = pd.read_excel(excel_file2, header=None)
+        elif excel_file is not None and excel_file2 is None:
+            df = pd.read_excel(excel_file, header=None)  
+        else:
+            st.write("Maintenant vous allez pouvoir charger votre fichier excel pour commencer.")  
+
+        if excel_file or excel_file2 is not None:   
+            if len(df.columns)==11:
+                colonnes = ['Date', 'Titre', 'Nom', 'Prénom', 'mail', 'Site', 'Type', 'Date_début', 'Date_fin', 'col', 'Formation']
+                df.columns = colonnes
+                df=df.drop(["Titre", "mail", "Type", "col", "Formation"], axis=1)
+                df['Nom_Prénom']=df['Nom']+" "+df['Prénom']
+                df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+                df['Date'] = df['Date'].dt.strftime('%d/%m/%Y')
+                df['Date'] = df['Date'].fillna(method='ffill')
+                df['Durée'] = df.apply(calculate_duration, axis=1)
+            else:
+                colonnes = ['Date', 'Titre', 'Nom', 'Prénom', 'mail', 'Site', 'Type', 'Date_début', 'Date_fin']
+                df.columns = colonnes
+                df=df.drop(["Titre", "mail", "Type"], axis=1)
+                df['Nom_Prénom']=df['Nom']+" "+df['Prénom']
+                df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+                df['Date'] = df['Date'].dt.strftime('%d/%m/%Y')
+                df['Date'] = df['Date'].fillna(method='ffill')
+                df['Durée'] = df.apply(calculate_duration, axis=1)
 
         if page == pages[1]:
+            #st.title("RH ART")
             st.header("Données :")
             st.write("Les données vont du",df['Date'].iloc[0], "au",df['Date'].iloc[-1], ".")    
             
