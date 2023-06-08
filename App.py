@@ -164,7 +164,11 @@ def main():
                 "août":8, "septembre":9, "octobre":10, "novembre":11, "décembre":12}
             mois_select=st.selectbox("Choisissez un mois :", list(mois.keys()))
             mois_int = mois[mois_select]
-            
+
+            df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+            #mois_filtre = mois_int 
+            #df_filtre = df[df['Date'].dt.month == mois_filtre]
+            #             
             # Obtenir la date actuelle
             date_actuelle = datetime.now()
 
@@ -180,11 +184,6 @@ def main():
             # Déterminer la date de fin (25 du mois sélectionné)
             date_fin = datetime(date_actuelle.year, mois_int, 25)
             df_filtre = df[(df['Date'] >= date_debut) & (df['Date'] <= date_fin)]
-
-
-            #df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
-            #mois_filtre = mois_int 
-            #df_filtre = df[df['Date'].dt.month == mois_filtre]
             
             if not df_filtre.empty:
                 st.subheader(f"Durée totale réalisée par ART du {date_debut.day}/{date_debut.month} au {date_fin.day}/{date_fin.month}")
