@@ -163,7 +163,7 @@ def main():
                                 "Marseille": '#33F0FF', "Dijon":'#D7820B', "Clermont":"#99249F", "Brest":'#474C4C'}
                 grouped_data = df_filtre.groupby(['Nom_Prénom', 'Site'])['Durée'].sum().reset_index()
                 fig2=plt.figure(figsize=(20, 12))
-                ax = sns.barplot(x='Nom_Prénom', y='Durée', 
+                ax = sns.barplot(x='Nom_Prenom', y='Durée', 
                                  hue='Site', data=grouped_data, 
                                  palette=couleurs_sites, ci=None, width=0.5)
                 plt.style.use('seaborn-whitegrid')
