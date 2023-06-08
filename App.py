@@ -63,7 +63,7 @@ def main():
         if excel_file is not None: 
             # Charger le fichier Excel dans un DataFrame pandas
             df = pd.read_excel(excel_file, header=None)
-            df= df[df['Source']=='AO']
+            #df= df[df['Source']=='AO']
         else:
             st.write("Maintenant vous allez pouvoir charger votre fichier excel pour commencer.")  
 
