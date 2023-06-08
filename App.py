@@ -59,24 +59,13 @@ def main():
             
         st.sidebar.header("Données :")
         excel_file = st.sidebar.file_uploader("Charger un fichier Excel (dates les plus anciennes)", type=["xlsx", "xls"])
-        #excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin (dates les plus récentes)", type=["xlsx", "xls"])
 
-        if excel_file is not None: #and excel_file2 is not None:
+        if excel_file is not None: 
             # Charger le fichier Excel dans un DataFrame pandas
             df = pd.read_excel(excel_file, header=None)
-            #df2 = pd.read_excel(excel_file2, header=None)
-            #df=pd.concat([df1,df2])
-        #elif excel_file is None and excel_file2 is not None:
-            # Charger le fichier Excel dans un DataFrame pandas
-        #    df = pd.read_excel(excel_file2, header=None)
-        #elif excel_file is not None and excel_file2 is None:
-        #    df = pd.read_excel(excel_file, header=None)  
+            df= df[df['Source']=='AO']
         else:
             st.write("Maintenant vous allez pouvoir charger votre fichier excel pour commencer.")  
-
-        if excel_file is not None: #or excel_file2 is not None:   
-            df= df[df['Source']=='AO']
-
 
         if page == pages[1]:
             #st.title("RH ART")
