@@ -125,7 +125,7 @@ def main():
                 site_sel=st.multiselect("Site:", couleurs_sites, default=couleurs_sites)
                 grouped_data2 = df_filtre.groupby(['Nom_Prenom', 'Site', 'Date'])['Durée'].sum().reset_index()
                 grouped_data_filtr=grouped_data2[grouped_data2['Site'].isin (site_sel)]
-                grouped_data_filtr=grouped_data_filtr.sort_values(by='Nom_Prenom', ascending=True)
+                grouped_data_filtr=grouped_data_filtr.sort_values(by='Date', ascending=True)
                 st.dataframe(grouped_data_filtr)
                 st.markdown(download_excel(grouped_data_filtr), unsafe_allow_html=True)
 
@@ -191,7 +191,7 @@ def main():
                 site_sel=st.multiselect("Site:", couleurs_sites, default=couleurs_sites)
                 grouped_data2 = df_filtre.groupby(['Nom_Prenom', 'Site', 'Date'])['Durée'].sum().reset_index()
                 grouped_data_filtr=grouped_data2[grouped_data2['Site'].isin (site_sel)]
-                grouped_data_filtr=grouped_data_filtr.sort_values(by='Nom_Prenom', ascending=True)
+                grouped_data_filtr=grouped_data_filtr.sort_values(by='Date', ascending=True)
                 st.dataframe(grouped_data_filtr)
                 st.markdown(download_excel(grouped_data_filtr), unsafe_allow_html=True)
 
