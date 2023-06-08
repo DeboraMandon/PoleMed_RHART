@@ -190,7 +190,7 @@ def main():
                 couleurs_sites = {"St etienne": '#38E446', "Lyon": '#0F095F', "Bordeaux":'#A62A2A', "Rennes":'#E5EA18', 
                                 "Marseille": '#33F0FF', "Dijon":'#D7820B', "Clermont":"#99249F", "Brest":'#474C4C'}
                 grouped_data = df_filtre.groupby(['Nom_Prénom', 'Site'])['Durée'].sum().reset_index()
-                fig1=plt.figure(figsize=(20, 12))
+                fig2=plt.figure(figsize=(20, 12))
                 ax = sns.barplot(x='Nom_Prénom', y='Durée', 
                                  hue='Site', data=grouped_data, 
                                  palette=couleurs_sites, ci=None, width=0.5)
@@ -208,7 +208,7 @@ def main():
                 plt.ylabel('Durée totale')
                 plt.xticks(rotation=70, ha='right',)
                 plt.legend(loc="best")
-                st.pyplot(fig1)
+                st.pyplot(fig2)
                 
                 st.subheader(f"Durée cumulée réalisée par ART pour le mois de {mois_select}")
                 grouped_data['Durée'] = grouped_data.groupby(['Nom_Prénom'])['Durée'].cumsum()
