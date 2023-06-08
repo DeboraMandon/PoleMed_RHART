@@ -52,7 +52,7 @@ def main():
         if page == pages[0]:
             #st.title("Calcul des heures des ART")
             st.write("Cette application vous permettra d'obtenir les heures de travail des ART\n",
-                    "une fois les données du planning chargée. Vous pouvez les obtenir en suivant le chemin suivant:\n",
+                    "une fois les données du planning chargée. Vous pouvez les obtenir en suivant le chemin suivant\n",
                     "'Users\username\Imadis Téléradiologie\INTRANET - IMADIS\QUALITE\7- RHM\15 - DMA\GitHub\data\'n",
                     "Ensuite sélectionnez BDD.csv puis ouvrir.\n")
             #st.image("planning.png")
