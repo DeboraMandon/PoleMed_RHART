@@ -16,7 +16,7 @@ username = getpass.getuser()
 # télécharger les données puis les conserver en cache
 @st.cache_data
 def load_data():
-    df= pd.read_csv("C:/Users"+username+"/Imadis Téléradiologie/INTRANET - IMADIS/QUALITE/7- RHM/15 - DMA/GitHub/data/BDD.csv")
+    df= pd.read_csv("C:/Users/"+username+"/Imadis Téléradiologie/INTRANET - IMADIS/QUALITE/7- RHM/15 - DMA/GitHub/data/BDD.csv")
     return df
 df = load_data()
 
