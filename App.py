@@ -69,7 +69,6 @@ def main():
 
         if page == pages[1]:
             #st.title("RH ART")
-            st.dataframe(df)
             st.header("Données :")
             st.write("Les données vont du",df['Date'].iloc[0], "au",df['Date'].iloc[-1], ".")    
             
@@ -77,7 +76,7 @@ def main():
                 st.subheader("Visualisation du jeu de données : ")
                 st. write("Nombre de lignes et nombre de colonne :", df.shape)
                 st.dataframe(df)
-                #st.write(df.dtypes)
+                st.write(df.dtypes)
             st.sidebar.image('logo.png')
             
         if page == pages[2]:
