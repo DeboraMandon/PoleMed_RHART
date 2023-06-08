@@ -117,7 +117,7 @@ def main():
                 st.pyplot(fig1)
                 
                 st.subheader(f"Durée cumulée réalisée par ART pour le mois de {mois_select}")
-                grouped_data['Durée'] = grouped_data.groupby(['Nom_Prénom'])['Durée'].cumsum()
+                grouped_data['Durée'] = grouped_data.groupby(['Nom_Prenom'])['Durée'].cumsum()
                 st.dataframe(grouped_data)
                 st.markdown(download_excel(grouped_data), unsafe_allow_html=True)
                         
