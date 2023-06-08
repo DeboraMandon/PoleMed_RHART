@@ -80,6 +80,7 @@ def main():
 
         if page == pages[1]:
             #st.title("RH ART")
+            st.dataframe(df)
             st.header("Données :")
             st.write("Les données vont du",df['Date'].iloc[0], "au",df['Date'].iloc[-1], ".")    
             
