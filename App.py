@@ -53,7 +53,7 @@ def main():
             #st.title("Calcul des heures des ART")
             st.write("Cette application vous permettra d'obtenir les heures de travail des ART\n",
                     "une fois les données du planning chargée. Vous pouvez les obtenir en suivant le chemin suivant:\n",
-                    "C:\Users\username\Imadis Téléradiologie\INTRANET - IMADIS\QUALITE\7- RHM\15 - DMA\GitHub\data\BDD.csv.\n",
+                    "C:\Users\username\Imadis Téléradiologie\INTRANET - IMADIS\QUALITE\7- RHM\15 - DMA\GitHub\data\n",
                     "Ensuite sélectionnez BDD.csv puis ouvrir.\n")
             #st.image("planning.png")
             
@@ -75,7 +75,7 @@ def main():
             st.write("Maintenant vous allez pouvoir charger votre fichier excel pour commencer.")  
 
         if excel_file is not None: #or excel_file2 is not None:   
-            df= df[df['Type']=='AO']
+            df= df[df['Source']=='AO']
 
 
         if page == pages[1]:
