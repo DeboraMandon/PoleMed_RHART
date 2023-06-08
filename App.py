@@ -95,7 +95,7 @@ def main():
                 st.subheader(f"Durée totale réalisée par ART pour le mois de {mois_select}")
                 couleurs_sites = {"St etienne": '#38E446', "Lyon": '#0F095F', "Bordeaux":'#A62A2A', "Rennes":'#E5EA18', 
                                 "Marseille": '#33F0FF', "Dijon":'#D7820B', "Clermont":"#99249F", "Brest":'#474C4C'}
-                grouped_data = df_filtre.groupby(['Nom_Prénom', 'Site'])['Durée'].sum().reset_index()
+                grouped_data = df_filtre.groupby(['Nom_Prenom', 'Site'])['Durée'].sum().reset_index()
                 fig1=plt.figure(figsize=(20, 12))
                 ax = sns.barplot(x='Nom_Prenom', y='Durée', 
                                  hue='Site', data=grouped_data, 
@@ -123,9 +123,9 @@ def main():
                         
                 st.subheader(f"Total des vacations réalisées par ART pour le mois de {mois_select}")
                 site_sel=st.multiselect("Site:", couleurs_sites, default=couleurs_sites)
-                grouped_data2 = df_filtre.groupby(['Nom_Prénom', 'Site', 'Date'])['Durée'].sum().reset_index()
+                grouped_data2 = df_filtre.groupby(['Nom_Prenom', 'Site', 'Date'])['Durée'].sum().reset_index()
                 grouped_data_filtr=grouped_data2[grouped_data2['Site'].isin (site_sel)]
-                grouped_data_filtr=grouped_data_filtr.sort_values(by='Nom_Prénom', ascending=True)
+                grouped_data_filtr=grouped_data_filtr.sort_values(by='Nom_Prenom', ascending=True)
                 st.dataframe(grouped_data_filtr)
                 st.markdown(download_excel(grouped_data_filtr), unsafe_allow_html=True)
 
@@ -161,7 +161,7 @@ def main():
                 st.subheader(f"Durée totale réalisée par ART du {date_debut.day}/{date_debut.month} au {date_fin.day}/{date_fin.month}")
                 couleurs_sites = {"St etienne": '#38E446', "Lyon": '#0F095F', "Bordeaux":'#A62A2A', "Rennes":'#E5EA18', 
                                 "Marseille": '#33F0FF', "Dijon":'#D7820B', "Clermont":"#99249F", "Brest":'#474C4C'}
-                grouped_data = df_filtre.groupby(['Nom_Prénom', 'Site'])['Durée'].sum().reset_index()
+                grouped_data = df_filtre.groupby(['Nom_Prenom', 'Site'])['Durée'].sum().reset_index()
                 fig2=plt.figure(figsize=(20, 12))
                 ax = sns.barplot(x='Nom_Prenom', y='Durée', 
                                  hue='Site', data=grouped_data, 
@@ -183,15 +183,15 @@ def main():
                 st.pyplot(fig2)
                 
                 st.subheader(f"Durée cumulée réalisée par ART pour le mois de {mois_select}")
-                grouped_data['Durée'] = grouped_data.groupby(['Nom_Prénom'])['Durée'].cumsum()
+                grouped_data['Durée'] = grouped_data.groupby(['Nom_Prenom'])['Durée'].cumsum()
                 st.dataframe(grouped_data)
                 st.markdown(download_excel(grouped_data), unsafe_allow_html=True)
                         
                 st.subheader(f"Total des vacations réalisées par ART pour le mois de {mois_select}")
                 site_sel=st.multiselect("Site:", couleurs_sites, default=couleurs_sites)
-                grouped_data2 = df_filtre.groupby(['Nom_Prénom', 'Site', 'Date'])['Durée'].sum().reset_index()
+                grouped_data2 = df_filtre.groupby(['Nom_Prenom', 'Site', 'Date'])['Durée'].sum().reset_index()
                 grouped_data_filtr=grouped_data2[grouped_data2['Site'].isin (site_sel)]
-                grouped_data_filtr=grouped_data_filtr.sort_values(by='Nom_Prénom', ascending=True)
+                grouped_data_filtr=grouped_data_filtr.sort_values(by='Nom_Prenom', ascending=True)
                 st.dataframe(grouped_data_filtr)
                 st.markdown(download_excel(grouped_data_filtr), unsafe_allow_html=True)
 
