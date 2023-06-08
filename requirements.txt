@@ -6,3 +6,5 @@ datetime
 openpyxl
 inotify
 configparser
+selenium
+webdriver_manager
