@@ -51,49 +51,32 @@ def main():
 
         if page == pages[0]:
             #st.title("Calcul des heures des ART")
-            st.write("Cette application vous permettra d'obtenir les heures de travail des\n",
-                    "une fois les données du planning chargée. Vous pouvez les obtenir depuis\n",
-                    "le planning IMADIS dans la section 'Administrateur' puis 'Tour de Garde'.\n",
-                    "Ensuite sélectionnez le/les Tour(s) de Garde dont vous souhaitez extraire les informations.\n",
-                    "Cliquer sur l'îcone du fichier Excel et sélectionner 'ART' puis 'Générer.")
-            st.image("planning.png")
+            st.write("Cette application vous permettra d'obtenir les heures de travail des ART\n",
+                    "une fois les données du planning chargée. Vous pouvez les obtenir en suivant le chemin suivant:\n",
+                    "C:\Users\username\Imadis Téléradiologie\INTRANET - IMADIS\QUALITE\7- RHM\15 - DMA\GitHub\data\BDD.csv.\n",
+                    "Ensuite sélectionnez BDD.csv puis ouvrir.\n")
+            #st.image("planning.png")
             
         st.sidebar.header("Données :")
         excel_file = st.sidebar.file_uploader("Charger un fichier Excel (dates les plus anciennes)", type=["xlsx", "xls"])
-        excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin (dates les plus récentes)", type=["xlsx", "xls"])
+        #excel_file2 = st.sidebar.file_uploader("Charger un second fichier Excel si besoin (dates les plus récentes)", type=["xlsx", "xls"])
 
-        if excel_file is not None and excel_file2 is not None:
+        if excel_file is not None: #and excel_file2 is not None:
             # Charger le fichier Excel dans un DataFrame pandas
-            df1 = pd.read_excel(excel_file, header=None)
-            df2 = pd.read_excel(excel_file2, header=None)
-            df=pd.concat([df1,df2])
-        elif excel_file is None and excel_file2 is not None:
+            df = pd.read_excel(excel_file, header=None)
+            #df2 = pd.read_excel(excel_file2, header=None)
+            #df=pd.concat([df1,df2])
+        #elif excel_file is None and excel_file2 is not None:
             # Charger le fichier Excel dans un DataFrame pandas
-            df = pd.read_excel(excel_file2, header=None)
-        elif excel_file is not None and excel_file2 is None:
-            df = pd.read_excel(excel_file, header=None)  
+        #    df = pd.read_excel(excel_file2, header=None)
+        #elif excel_file is not None and excel_file2 is None:
+        #    df = pd.read_excel(excel_file, header=None)  
         else:
             st.write("Maintenant vous allez pouvoir charger votre fichier excel pour commencer.")  
 
-        if excel_file or excel_file2 is not None:   
-            if len(df.columns)==11:
-                colonnes = ['Date', 'Titre', 'Nom', 'Prénom', 'mail', 'Site', 'Type', 'Date_début', 'Date_fin', 'col', 'Formation']
-                df.columns = colonnes
-                df=df.drop(["Titre", "mail", "Type", "col", "Formation"], axis=1)
-                df['Nom_Prénom']=df['Nom']+" "+df['Prénom']
-                df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
-                df['Date'] = df['Date'].dt.strftime('%d/%m/%Y')
-                df['Date'] = df['Date'].fillna(method='ffill')
-                df['Durée'] = df.apply(calculate_duration, axis=1)
-            else:
-                colonnes = ['Date', 'Titre', 'Nom', 'Prénom', 'mail', 'Site', 'Type', 'Date_début', 'Date_fin']
-                df.columns = colonnes
-                df=df.drop(["Titre", "mail", "Type"], axis=1)
-                df['Nom_Prénom']=df['Nom']+" "+df['Prénom']
-                df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
-                df['Date'] = df['Date'].dt.strftime('%d/%m/%Y')
-                df['Date'] = df['Date'].fillna(method='ffill')
-                df['Durée'] = df.apply(calculate_duration, axis=1)
+        if excel_file is not None: #or excel_file2 is not None:   
+            df= df[df['Type']=='AO']
+
 
         if page == pages[1]:
             #st.title("RH ART")
