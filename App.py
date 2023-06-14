@@ -63,6 +63,7 @@ def main():
         if excel_file is not None: 
             # Charger le fichier Excel dans un DataFrame pandas
             df = pd.read_excel(excel_file)
+            df = df[df['Date'] > '2022-12-31']
             df= df[df['Source']=='ART']
         else:
             st.write("Maintenant vous allez pouvoir charger votre fichier excel pour commencer.")  
